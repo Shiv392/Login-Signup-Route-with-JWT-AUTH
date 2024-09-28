@@ -32,7 +32,7 @@ const Signup = async (req, res) => {
                 console.log('userid----------->', userid);
 
                 // Use appropriate salt rounds (10)
-                bcrypt.hash(password, 10, (hasherr, hashpassword) => {
+                bcrypt.hash(password,Number(process.env.HASH), (hasherr, hashpassword) => {
                     console.log('hashpassword---------->',hashpassword)
                     if (hasherr) {
                         console.log('bcrypt hash error:', hasherr);  // Log hash error for debugging
