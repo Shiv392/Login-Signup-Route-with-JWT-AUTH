@@ -2,6 +2,12 @@ const express = require('express');
 const app=express();
 const port = 8000;
 const mysqlconnetion=require('./model/db.js');
+const SignUp=require('./routes/SignUp.js');
+const bodyparser=require('body-parser');
+const cors=require('cors');
+
+app.use(bodyparser.json());
+app.use(cors())
 
 mysqlconnetion.connect((err)=>{
     if(err){
@@ -11,6 +17,8 @@ mysqlconnetion.connect((err)=>{
         console.log('database connection stablished')
     }
 })
+
+app.use(SignUp)
 
 app.get('/',(req,res)=>{
     return res.send(`<h1>this is home page</h1>`)
