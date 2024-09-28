@@ -1,5 +1,6 @@
 const bcrypt=require('bcrypt');
 const mysql=require('../model/db.js');
+const jwt=require('jsonwebtoken');
 
 const Login=(req,res)=>{
 const {email,password}=req.body;
@@ -34,9 +35,23 @@ mysql.query(`select * from user where email=?`,[email],(err,user)=>{
                 }
                 else{
                     if(compare){
+                        const token=jwt.sign(
+                            {
+                                userid:user[0].userid,
+                                email:user[0].email
+                            },
+                            process.env.JWTTOKEN,
+                            {expiresIn:'24hr'}
+                        );
+                        console.log('jwt token---------->')
                         return res.status(200).json({
                             success:true,
-                            message:'Login Successfull'
+                            message:'Login Successfull',
+                            data:{
+                                email:user[0].email,
+                                name:user[0].name,
+                                token:token
+                            }
                         })
                     }
                     else{
